@@ -1,20 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import LoginNavigator from "./navigation/loginRoutes";
+import { Provider } from "react-redux";
+// import react native paper
+import { Provider as PaperProvider } from "react-native-paper";
+// importing store
+import Store from "./store/store";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PaperProvider>
+      <Provider store={Store}>
+        {/* // todo - use loginNavigator if isLoggedin == true */}
+        <LoginNavigator />
+      </Provider>
+    </PaperProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
