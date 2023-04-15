@@ -81,8 +81,19 @@ export async function logoutAllDevicesController() {
 }
 
 export async function signInWithGoogleController({ token }) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  };
+
   try {
-    const response = await axios.get(endpoints.signInWithGoogleEndpoint);
+    const response = await axios.get(
+      endpoints.signInWithGoogleEndpoint,
+      config
+    );
+
     return response.data;
   } catch (error) {
     console.log(error);

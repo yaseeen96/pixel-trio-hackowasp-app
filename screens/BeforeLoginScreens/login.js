@@ -1,6 +1,6 @@
 import { useTheme } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Image, useColorScheme } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import * as SecureStore from "expo-secure-store";
@@ -19,6 +19,10 @@ import {
 } from "../../controllers/beforeLoginControllers/beforeLoginControllers";
 import { AuthActions } from "../../store/slices/authSlice";
 
+const logoWhite = require("../../assets/logo-white.png");
+const logoDark = require("../../assets/logo-dark.png");
+const googleLogo = require("../../assets/googleLogo.png");
+
 // store token in secure store
 // async function saveAuthToken(value) {
 //   try {
@@ -32,9 +36,12 @@ import { AuthActions } from "../../store/slices/authSlice";
 WebBrowser.maybeCompleteAuthSession();
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const [emailId, setEmailId] = useState("mdmusaibali@gmail.com");
   const [password, setPassword] = useState("Password11.com");
   const { colors } = useTheme();
+  const scheme = useColorScheme();
+
   const styles = getStyles({ colors });
 
   const [request, response, promptAsync] = Google.useAuthRequest(
@@ -74,6 +81,7 @@ const LoginScreen = ({ navigation }) => {
   };
   const onLoginButtonPress = async () => {
     try {
+      setIsLoading(true);
       const response = await loginController({ email: emailId, password });
       dispatch(
         AuthActions.Login({ email: response.email, token: response.token })
@@ -81,6 +89,7 @@ const LoginScreen = ({ navigation }) => {
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   const onSignupButtonPress = () => {
@@ -89,7 +98,11 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Login Screen</Text>
+      {scheme === "dark" ? (
+        <Image source={logoDark} style={styles.logo} />
+      ) : (
+        <Image source={logoWhite} style={styles.logo} />
+      )}
       <TextInput
         style={styles.textInput}
         label="email"
@@ -104,39 +117,53 @@ const LoginScreen = ({ navigation }) => {
         value={password}
         onChangeText={(password) => setPassword(password)}
         mode="outlined"
-        placeholder="enter your email address"
+        placeholder="enter your password"
         secureTextEntry={true}
       />
-      <Button
-        mode="contained"
-        onPress={onLoginButtonPress}
-        theme={{ roundness: 2 }}
-        buttonColor={colors.buttonColor}
-        loading={true}
-        disabled={true}
-      >
-        Sign in
-      </Button>
+      <View style={styles.buttonContainer}>
+        <Button
+          mode="contained"
+          onPress={onLoginButtonPress}
+          theme={{ roundness: 2 }}
+          buttonColor={colors.buttonColor}
+          loading={isLoading}
+          disabled={isLoading}
+          textColor={colors.buttonTextColor}
+        >
+          Sign in
+        </Button>
+      </View>
+
       <View style={styles.signupButtonContainer}>
-        <Text>Don't have an account? </Text>
+        <Text style={styles.text}>Don't have an account? </Text>
         <Button
           mode="text"
           textColor={colors.primary}
           onPress={onSignupButtonPress}
+          loading={isLoading}
+          disabled={isLoading}
+          style={styles.button}
         >
           Signup
         </Button>
       </View>
-      <Button
-        icon="google"
-        mode="contained"
-        onPress={googleLogin}
-        theme={{ roundness: 2 }}
-        buttonColor={colors.buttonColor}
-      >
-        {" "}
-        Sign in with google
-      </Button>
+      <View style={styles.buttonContainer}>
+        <Button
+          icon={() => (
+            <Image
+              source={googleLogo}
+              style={{ width: 20, height: 20, resizeMode: "contain" }}
+            />
+          )}
+          mode="contained"
+          onPress={googleLogin}
+          theme={{ roundness: 2 }}
+          buttonColor={colors.googleButtonColor}
+          textColor={colors.text}
+        >
+          Sign in with google
+        </Button>
+      </View>
     </View>
   );
 };
@@ -144,19 +171,38 @@ const LoginScreen = ({ navigation }) => {
 const getStyles = ({ colors }) =>
   StyleSheet.create({
     container: {
+      width: "100%",
       flex: 1,
       backgroundColor: colors.background,
       justifyContent: "flex-start",
       padding: "10%",
+      alignItems: "center",
     },
     textInput: {
+      width: "100%",
       marginVertical: 10,
+      borderRadius: 100,
     },
     signupButtonContainer: {
+      height: 75,
+      marginVertical: "5%",
       display: "flex",
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
+    },
+    logo: {
+      width: "100%",
+      resizeMode: "contain",
+      height: "25%",
+      marginTop: "10%",
+      marginBottom: "10%",
+    },
+    buttonContainer: {
+      width: "100%",
+    },
+    text: {
+      color: colors.text,
     },
   });
 

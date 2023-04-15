@@ -34,7 +34,9 @@ const SignupScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>Signup, Create your account</Text>
+      <Text style={styles.heading}>Signup</Text>
+      <Text style={styles.subheading}>Create your account :)</Text>
+
       <TextInput
         style={styles.textInput}
         label="full name"
@@ -69,14 +71,17 @@ const SignupScreen = ({ navigation }) => {
         placeholder="re enter your password"
         secureTextEntry={true}
       />
-      <Button
-        mode="contained"
-        onPress={onSignupButtonPress}
-        theme={{ roundness: 2 }}
-        buttonColor={colors.buttonColor}
-      >
-        Sign up
-      </Button>
+      <View style={styles.buttonContainer}>
+        <Button
+          mode="contained"
+          onPress={onSignupButtonPress}
+          theme={{ roundness: 2 }}
+          buttonColor={colors.buttonColor}
+          textColor={colors.buttonTextColor}
+        >
+          Sign up
+        </Button>
+      </View>
     </View>
   );
 };
@@ -84,11 +89,33 @@ const SignupScreen = ({ navigation }) => {
 const getStyles = ({ colors }) =>
   StyleSheet.create({
     container: {
+      padding: "10%",
       backgroundColor: colors.background,
+      height: "100%",
+      display: "flex",
+      flex: 1,
     },
 
-    text: {
+    heading: {
       color: colors.text,
+      fontSize: 50,
+      marginTop: 10,
+      marginVertical: 10,
+    },
+    subheading: {
+      color: colors.text,
+      fontSize: 20,
+      marginVertical: 10,
+    },
+    textInput: {
+      width: "100%",
+      marginVertical: 10,
+      borderRadius: 100,
+    },
+
+    buttonContainer: {
+      width: "100%",
+      marginVertical: "4%",
     },
   });
 

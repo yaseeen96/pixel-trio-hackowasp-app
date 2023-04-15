@@ -2,8 +2,8 @@ import { useTheme } from "@react-navigation/native";
 import React from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { useDispatch } from "react-redux";
-import { logoutController } from "../controllers/beforeLoginControllers/beforeLoginControllers";
-import { AuthActions } from "../store/slices/authSlice";
+import { logoutController } from "../../controllers/beforeLoginControllers/beforeLoginControllers";
+import { AuthActions } from "../../store/slices/authSlice";
 
 const ProfileScreen = ({ navigation }) => {
   const { colors } = useTheme();

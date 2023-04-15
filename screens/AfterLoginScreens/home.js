@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 
 import { TextInput } from "react-native-paper";
-import { validateMyselfController } from "../controllers/beforeLoginControllers/beforeLoginControllers";
+import { validateMyselfController } from "../../controllers/beforeLoginControllers/beforeLoginControllers";
 import { useDispatch } from "react-redux";
-import { AuthActions } from "../store/slices/authSlice";
+import { AuthActions } from "../../store/slices/authSlice";
 
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
@@ -30,7 +30,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TextInput />
+      <Text style={styles.text}> Home Screen</Text>
     </View>
   );
 };
@@ -38,7 +38,11 @@ const HomeScreen = ({ navigation }) => {
 const getStyles = ({ colors }) =>
   StyleSheet.create({
     container: {
+      display: "flex",
+      flex: 1,
       backgroundColor: colors.background,
+      justifyContent: "center",
+      alignItems: "center",
     },
     text: {
       color: colors.text,
