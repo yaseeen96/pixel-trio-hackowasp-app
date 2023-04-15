@@ -2,6 +2,7 @@ export const lightTheme = {
   dark: false,
   colors: {
     primary: "#FDE616",
+    secondary: "#D1BE13",
     background: "white",
     card: "green",
     text: "black",
@@ -12,10 +13,11 @@ export const lightTheme = {
     disabled: "grey",
     validator: "red",
     containerColor: "lightgreen",
-    iconColor: "white",
+    iconColor: "black",
     buttonColor: "#FDE616",
     googleButtonColor: "#00000009",
     buttonTextColor: "black",
+    activeTabBarColor: "white",
   },
 };
 
@@ -23,6 +25,7 @@ export const darkTheme = {
   dark: true,
   colors: {
     primary: "#FDE616",
+    secondary: "#D1BE13",
     background: "black",
     card: "green",
     text: "white",
@@ -37,5 +40,6 @@ export const darkTheme = {
     buttonColor: "#FDE616",
     googleButtonColor: "#FFFFFF15",
     buttonTextColor: "black",
+    activeTabBarColor: "white",
   },
 };

@@ -21,9 +21,9 @@ const BottomNavigator = () => {
     <Tab.Navigator
       initialRouteName="home"
       screenOptions={({ route }) => ({
-        tabBarItemStyle: { borderRadius: "50%" },
-        tabBarActiveBackgroundColor: colors.text,
-        tabBarActiveTintColor: "black",
+        // tabBarItemStyle: { width: 50, borderRadius: 1000 },
+        tabBarActiveBackgroundColor: colors.activeTabBarColor,
+
         tabBarStyle: { backgroundColor: colors.primary },
 
         tabBarIcon: ({ focussed, color, size }) => {

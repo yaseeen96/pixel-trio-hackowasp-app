@@ -1,17 +1,16 @@
 import { useTheme } from "@react-navigation/native";
 import React from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { Button, TextInput } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { logoutController } from "../../controllers/beforeLoginControllers/beforeLoginControllers";
 import { AuthActions } from "../../store/slices/authSlice";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const ProfileScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const styles = getStyles({ colors });
   const dispatch = useDispatch();
-  const onButtonPress = () => {
-    navigation.navigate("Signup");
-  };
 
   const logoutHandler = async () => {
     try {
@@ -24,8 +23,41 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Profile Screen</Text>
-      <Button title="Logout" onPress={logoutHandler} />
+      <Text style={styles.heading}>My Profile</Text>
+      <Ionicons
+        name="person"
+        color={colors.primary}
+        size={150}
+        style={{ alignSelf: "center", marginTop: "10%" }}
+      />
+      <View style={styles.profileDetailsContainer}>
+        <TextInput
+          style={styles.textInput}
+          label="name"
+          value={"Venkatesh Patil"}
+          mode="outlined"
+          disabled={true}
+        />
+        <TextInput
+          style={styles.textInput}
+          label="email"
+          value={"Venkateshpatil193@gmail.com"}
+          mode="outlined"
+          disabled={true}
+        />
+      </View>
+
+      <Button
+        title="Logout"
+        onPress={logoutHandler}
+        mode="contained"
+        buttonColor={colors.primary}
+        textColor={colors.buttonTextColor}
+        style={styles.button}
+        theme={{ roundness: 2 }}
+      >
+        Logout
+      </Button>
     </View>
   );
 };
@@ -34,9 +66,34 @@ const getStyles = ({ colors }) =>
   StyleSheet.create({
     container: {
       backgroundColor: colors.background,
+      display: "flex",
+      flex: 1,
+      height: "100%",
+      padding: "10%",
     },
-    text: {
+    heading: {
       color: colors.text,
+      fontSize: 40,
+      alignSelf: "center",
+    },
+    button: {
+      marginVertical: "20%",
+    },
+    profileDetails: {
+      color: colors.text,
+      fontSize: 14,
+      alignSelf: "flex-start",
+    },
+    profileDetailsContainer: {
+      marginTop: "10%",
+      padding: "10%",
+      backgroundColor: colors.googleButtonColor,
+      borderRadius: 20,
+    },
+    textInput: {
+      width: "100%",
+      marginVertical: 10,
+      borderRadius: 100,
     },
   });
 

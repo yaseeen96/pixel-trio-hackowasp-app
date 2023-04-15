@@ -1,8 +1,8 @@
 import { useTheme } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Image, useColorScheme } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-
+import { useDispatch } from "react-redux";
+import Toast from "react-native-toast-message";
 import * as SecureStore from "expo-secure-store";
 
 // google signin integration
@@ -83,9 +83,17 @@ const LoginScreen = ({ navigation }) => {
     try {
       setIsLoading(true);
       const response = await loginController({ email: emailId, password });
-      dispatch(
-        AuthActions.Login({ email: response.email, token: response.token })
-      );
+      if (response.success === true) {
+        dispatch(
+          AuthActions.Login({ email: response.email, token: response.token })
+        );
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Uh Oh",
+          text2: "Invalid credentials",
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -140,8 +148,6 @@ const LoginScreen = ({ navigation }) => {
           mode="text"
           textColor={colors.primary}
           onPress={onSignupButtonPress}
-          loading={isLoading}
-          disabled={isLoading}
           style={styles.button}
         >
           Signup
