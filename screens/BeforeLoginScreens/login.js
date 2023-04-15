@@ -1,16 +1,30 @@
 import { useTheme } from "@react-navigation/native";
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
 import { TextInput, Button } from "react-native-paper";
+import { loginController } from "../../controllers/beforeLoginControllers/beforeLoginControllers";
+import { AuthActions } from "../../store/slices/authSlice";
 
 const LoginScreen = ({ navigation }) => {
-  const [emailId, setEmailId] = useState("");
-  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.auth);
+  const [emailId, setEmailId] = useState("mdmusaibali@gmail.com");
+  const [password, setPassword] = useState("Password11.com");
+  console.log("state: " + state);
   const { colors } = useTheme();
   const styles = getStyles({ colors });
 
-  const onButtonPress = () => {};
+  const onButtonPress = async () => {
+    try {
+      const response = await loginController({ email: emailId, password });
+      dispatch(AuthActions.Login(response));
+      // console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <View style={styles.container}>

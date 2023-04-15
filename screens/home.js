@@ -7,8 +7,8 @@ import { TextInput } from "react-native-paper";
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const styles = getStyles({ colors });
-  const onButtonPress = () => {
-    navigation.navigate("Signup");
+  const onButtonPress = async () => {
+    await navigation.navigate("Signup");
   };
 
   return (

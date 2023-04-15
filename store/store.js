@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+import authSlice from "./slices/authSlice";
 
 // import slice
-import isLoginReducer from "./slices/isLoginSlice";
 
 const Store = configureStore({
   reducer: {
-    isLoggedin: isLoginReducer,
+    auth: authSlice,
   },
 });
 
