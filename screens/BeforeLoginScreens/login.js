@@ -3,24 +3,78 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
+import * as SecureStore from "expo-secure-store";
+
+// google signin integration
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import { makeRedirectUri, ResponseType } from "expo-auth-session";
+
 import { TextInput, Button } from "react-native-paper";
 import {
   loginController,
+  signInWithGoogleController,
   signupController,
 } from "../../controllers/beforeLoginControllers/beforeLoginControllers";
 import { AuthActions } from "../../store/slices/authSlice";
 
+// store token in secure store
+async function saveAuthToken(value) {
+  try {
+    await SecureStore.setItemAsync("auth_token", value);
+    console.log("Token saved successfully");
+  } catch (error) {
+    console.log("Error saving auth token:", error);
+  }
+}
+
+WebBrowser.maybeCompleteAuthSession();
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.auth);
   const [emailId, setEmailId] = useState("mdmusaibali@gmail.com");
   const [password, setPassword] = useState("Password11.com");
   const { colors } = useTheme();
   const styles = getStyles({ colors });
 
+  const [request, response, promptAsync] = Google.useAuthRequest(
+    {
+      androidClientId: process.env.GOOGLE_CLIENT_ID,
+      expoClientId: process.env.EXPO_CLIENT_ID,
+      responseType: ResponseType.Token,
+      redirectUri: makeRedirectUri({ useProxy: true }),
+    },
+    { useProxy: true }
+  );
+
+  const getGoogleLoginToken = async () => {
+    const authResponse = await promptAsync({ useProxy: true });
+    if (authResponse?.type === "success") {
+      // dispatch(
+      //   googleSignIn({ authToken: authResponse.authentication.accessToken })
+      // );
+
+      const token = authResponse.authentication.accessToken;
+      return token;
+    }
+  };
+
+  const googleLogin = async () => {
+    const token = await getGoogleLoginToken();
+    try {
+      const response = await signInWithGoogleController({ token });
+      if (response.success === true) {
+        dispatch(AuthActions.Login(response));
+      } else {
+        // todo - return notification to create an account first
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const onLoginButtonPress = async () => {
     try {
       const response = await loginController({ email: emailId, password });
+      saveAuthToken(response.token);
       dispatch(AuthActions.Login(response));
     } catch (error) {
       console.log(error);
@@ -69,6 +123,16 @@ const LoginScreen = ({ navigation }) => {
           Signup
         </Button>
       </View>
+      <Button
+        icon="google"
+        mode="contained"
+        onPress={googleLogin}
+        theme={{ roundness: 2 }}
+        buttonColor={colors.buttonColor}
+      >
+        {" "}
+        Sign in with google
+      </Button>
     </View>
   );
 };
@@ -93,3 +157,5 @@ const getStyles = ({ colors }) =>
   });
 
 export default LoginScreen;
+
+//

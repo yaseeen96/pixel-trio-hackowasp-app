@@ -86,3 +86,41 @@ export async function logoutAllDevicesController() {
     console.log(error);
   }
 }
+
+export async function signInWithGoogleController({ token }) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  };
+  const requestBody = {};
+
+  try {
+    const response = await axios.get(
+      endpoints.signInWithGoogleEndpoint,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response.data;
+  }
+}
+
+export async function validateMyselfController({ token }) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    const response = await axios.get(endpoints.validateMyselfEndpoint, config);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response.data;
+  }
+}
