@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -15,18 +15,19 @@ import {
   loginController,
   signInWithGoogleController,
   signupController,
+  validateMyselfController,
 } from "../../controllers/beforeLoginControllers/beforeLoginControllers";
 import { AuthActions } from "../../store/slices/authSlice";
 
 // store token in secure store
-async function saveAuthToken(value) {
-  try {
-    await SecureStore.setItemAsync("auth_token", value);
-    console.log("Token saved successfully");
-  } catch (error) {
-    console.log("Error saving auth token:", error);
-  }
-}
+// async function saveAuthToken(value) {
+//   try {
+//     await SecureStore.setItemAsync("auth_token", value);
+//     console.log("Token saved successfully");
+//   } catch (error) {
+//     console.log("Error saving auth token:", error);
+//   }
+// }
 
 WebBrowser.maybeCompleteAuthSession();
 const LoginScreen = ({ navigation }) => {
@@ -74,8 +75,9 @@ const LoginScreen = ({ navigation }) => {
   const onLoginButtonPress = async () => {
     try {
       const response = await loginController({ email: emailId, password });
-      saveAuthToken(response.token);
-      dispatch(AuthActions.Login(response));
+      dispatch(
+        AuthActions.Login({ email: response.email, token: response.token })
+      );
     } catch (error) {
       console.log(error);
     }
@@ -110,6 +112,8 @@ const LoginScreen = ({ navigation }) => {
         onPress={onLoginButtonPress}
         theme={{ roundness: 2 }}
         buttonColor={colors.buttonColor}
+        loading={true}
+        disabled={true}
       >
         Sign in
       </Button>

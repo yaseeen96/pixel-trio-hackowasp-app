@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import endpoints from "../../endpoints";
+import axios from "../../util/axios";
 
-import axios from "axios";
 export async function loginController({ email, password }) {
   const LOGIN_API_URL = endpoints.loginEndpoint;
   const requestBody = {
@@ -49,19 +49,12 @@ export async function verifySignupController({ email, otp }) {
 }
 
 export async function logoutController() {
-  const token = useSelector((state) => state.auth.authToken);
-  const requestBody = {};
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  };
   try {
-    const response = await axios.post(endpoints.logout, requestBody, config);
+    console.log(endpoints.logout);
+    const response = await axios.post(endpoints.logout);
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw new Error(error?.message);
   }
 }
 
@@ -88,19 +81,8 @@ export async function logoutAllDevicesController() {
 }
 
 export async function signInWithGoogleController({ token }) {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  };
-  const requestBody = {};
-
   try {
-    const response = await axios.get(
-      endpoints.signInWithGoogleEndpoint,
-      config
-    );
+    const response = await axios.get(endpoints.signInWithGoogleEndpoint);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -108,19 +90,11 @@ export async function signInWithGoogleController({ token }) {
   }
 }
 
-export async function validateMyselfController({ token }) {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  };
-
+export async function validateMyselfController() {
   try {
-    const response = await axios.get(endpoints.validateMyselfEndpoint, config);
+    const response = await axios.get(endpoints.validateMyselfEndpoint);
     return response.data;
   } catch (error) {
-    console.log(error);
-    return error.response.data;
+    throw new Error(error?.message);
   }
 }
