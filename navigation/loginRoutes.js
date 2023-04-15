@@ -7,28 +7,31 @@ import { darkTheme, lightTheme } from "../constants/themes";
 import LoginScreen from "../screens/BeforeLoginScreens/login";
 import SignupScreen from "../screens/BeforeLoginScreens/signup";
 import BottomNavigator from "./bottomNavigationBar";
+import VerifySignupScreen from "../screens/BeforeLoginScreens/verifySignup";
 import { NavigationContainer } from "@react-navigation/native";
 import { useColorScheme } from "react-native";
-// initialize HomeStack
-const HomeStack = createNativeStackNavigator();
+// initialize LoginStack
+const LoginStack = createNativeStackNavigator();
 
 const LoginNavigator = () => {
-  const scheme = useColorScheme();
   return (
-    <NavigationContainer theme={scheme === "dark" ? darkTheme : lightTheme}>
-      <HomeStack.Navigator initialRouteName="Login">
-        <HomeStack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ title: "Login" }}
-        />
-        <HomeStack.Screen
-          name="Signup"
-          component={SignupScreen}
-          options={{ title: "Signup" }}
-        />
-      </HomeStack.Navigator>
-    </NavigationContainer>
+    <LoginStack.Navigator initialRouteName="Login">
+      <LoginStack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ title: "Login" }}
+      />
+      <LoginStack.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{ title: "Signup" }}
+      />
+      <LoginStack.Screen
+        name="verifySignup"
+        component={VerifySignupScreen}
+        options={{ title: "verify signup" }}
+      />
+    </LoginStack.Navigator>
   );
 };
 

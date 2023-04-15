@@ -4,7 +4,10 @@ import { StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import { TextInput, Button } from "react-native-paper";
-import { loginController } from "../../controllers/beforeLoginControllers/beforeLoginControllers";
+import {
+  loginController,
+  signupController,
+} from "../../controllers/beforeLoginControllers/beforeLoginControllers";
 import { AuthActions } from "../../store/slices/authSlice";
 
 const LoginScreen = ({ navigation }) => {
@@ -12,18 +15,20 @@ const LoginScreen = ({ navigation }) => {
   const state = useSelector((state) => state.auth);
   const [emailId, setEmailId] = useState("mdmusaibali@gmail.com");
   const [password, setPassword] = useState("Password11.com");
-  console.log("state: " + state);
   const { colors } = useTheme();
   const styles = getStyles({ colors });
 
-  const onButtonPress = async () => {
+  const onLoginButtonPress = async () => {
     try {
       const response = await loginController({ email: emailId, password });
       dispatch(AuthActions.Login(response));
-      // console.log(response);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const onSignupButtonPress = () => {
+    navigation.navigate("Signup");
   };
 
   return (
@@ -44,15 +49,26 @@ const LoginScreen = ({ navigation }) => {
         onChangeText={(password) => setPassword(password)}
         mode="outlined"
         placeholder="enter your email address"
+        secureTextEntry={true}
       />
       <Button
         mode="contained"
-        onPress={onButtonPress}
+        onPress={onLoginButtonPress}
         theme={{ roundness: 2 }}
         buttonColor={colors.buttonColor}
       >
-        Signin
+        Sign in
       </Button>
+      <View style={styles.signupButtonContainer}>
+        <Text>Don't have an account? </Text>
+        <Button
+          mode="text"
+          textColor={colors.primary}
+          onPress={onSignupButtonPress}
+        >
+          Signup
+        </Button>
+      </View>
     </View>
   );
 };
@@ -67,6 +83,12 @@ const getStyles = ({ colors }) =>
     },
     textInput: {
       marginVertical: 10,
+    },
+    signupButtonContainer: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
     },
   });
 

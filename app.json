@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "mycoolredirect",
     "name": "frontend",
     "slug": "frontend",
     "version": "1.0.0",
@@ -21,7 +22,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff",
         "userInterfaceStyle": "automatic"
-      }
+      },
+      "package": "com.xerogo.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
