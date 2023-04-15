@@ -23,7 +23,6 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>My Profile</Text>
       <Ionicons
         name="person"
         color={colors.primary}
@@ -34,9 +33,10 @@ const ProfileScreen = ({ navigation }) => {
         <TextInput
           style={styles.textInput}
           label="name"
-          value={"Venkatesh Patil"}
+          value={"Yoo venkatesh"}
           mode="outlined"
           disabled={true}
+          underlineStyle={{ borderWidth: 0 }}
         />
         <TextInput
           style={styles.textInput}

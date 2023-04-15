@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { Searchbar } from "react-native-paper";
@@ -7,8 +7,10 @@ import { validateMyselfController } from "../../controllers/beforeLoginControlle
 import { useDispatch, useSelector } from "react-redux";
 import { AuthActions } from "../../store/slices/authSlice";
 import { Avatar, Button, Card } from "react-native-paper";
+import StarRating from "react-native-star-rating";
 
 const HomeScreen = ({ navigation }) => {
+  const [rating, setRating] = useState(0);
   const { colors } = useTheme();
   const styles = getStyles({ colors });
   const dispatch = useDispatch();
@@ -27,6 +29,10 @@ const HomeScreen = ({ navigation }) => {
     })();
   }, []);
 
+  const handleOnPrintPress = () => {
+    navigation.navigate("shop-details");
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Hello,</Text>
@@ -37,18 +43,28 @@ const HomeScreen = ({ navigation }) => {
         <View style={{ flexDirection: "row" }}>
           <Card.Cover
             source={{ uri: "https://picsum.photos/700" }}
-            style={{ width: "40%" }}
+            style={{ width: "40%", height: "100%" }}
           />
           <View style={styles.cardContent}>
-            <Card.Title title="Balaji xerox center" />
+            <Card.Title
+              title="Balaji xerox center"
+              titleStyle={{ color: colors.text, fontWeight: "bold" }}
+            />
 
             <Card.Content>
-              <Text variant="titleLarge">Card title</Text>
-              <Text variant="bodyMedium">Card content</Text>
+              <StarRating
+                disabled={true}
+                maxStars={5}
+                rating={2.5}
+                fullStar={"star"}
+                fullStarColor={colors.secondary}
+                halfStarColor={colors.secondary}
+                starSize={25}
+              />
             </Card.Content>
 
             <Card.Actions>
-              <Button>Print</Button>
+              <Button onPress={handleOnPrintPress}>Print</Button>
             </Card.Actions>
           </View>
         </View>
@@ -96,6 +112,7 @@ const getStyles = ({ colors }) =>
 
     cardContent: {
       width: "60%",
+      padding: "2%",
     },
   });
 
