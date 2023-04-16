@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import endpoints from "../../endpoints";
-import axios from "../../util/axios";
+import endpoints from "../endpoints";
+import axios from "../util/axios";
 
 export async function loginController({ email, password }) {
   const LOGIN_API_URL = endpoints.loginEndpoint;
@@ -31,6 +31,7 @@ export async function signupController({ email, password, fullName }) {
     return response.data;
   } catch (error) {
     console.log(error.response.data);
+    return error.response.data;
   }
 }
 
@@ -105,6 +106,15 @@ export async function signInWithGoogleController({ token }) {
 export async function validateMyselfController() {
   try {
     const response = await axios.get(endpoints.validateMyselfEndpoint);
+    return response.data;
+  } catch (error) {
+    throw new Error(error?.message);
+  }
+}
+
+export async function getVendorsController() {
+  try {
+    const response = await axios.get(endpoints.getVendorsEndpoint);
     return response.data;
   } catch (error) {
     throw new Error(error?.message);

@@ -3,7 +3,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { useDispatch } from "react-redux";
-import { logoutController } from "../../controllers/beforeLoginControllers/beforeLoginControllers";
+import { logoutController } from "../../controllers/controller";
 import { AuthActions } from "../../store/slices/authSlice";
 import Ionicons from "react-native-vector-icons/Ionicons";
 

@@ -7,6 +7,7 @@ class Endpoints {
   logoutAllDevices = "/user/logAllOut";
   signInWithGoogleEndpoint = "/user/googleSignIn";
   validateMyselfEndpoint = "/user/me";
+  getVendorsEndpoint = "/user/vendors";
 }
 
 export default new Endpoints();

@@ -5,6 +5,7 @@ const initialState = {
   isLoggedIn: false,
   user: null,
   authToken: null,
+  vendors: [],
 };
 
 export const authSlice = createSlice({
@@ -20,6 +21,9 @@ export const authSlice = createSlice({
     Logout: (state, action) => {
       clearSession();
       return initialState;
+    },
+    FillVendors: (state, action) => {
+      state.vendors = action.payload;
     },
   },
 });

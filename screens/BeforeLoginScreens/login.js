@@ -16,7 +16,7 @@ import {
   signInWithGoogleController,
   signupController,
   validateMyselfController,
-} from "../../controllers/beforeLoginControllers/beforeLoginControllers";
+} from "../../controllers/controller";
 import { AuthActions } from "../../store/slices/authSlice";
 
 const logoWhite = require("../../assets/logo-white.png");

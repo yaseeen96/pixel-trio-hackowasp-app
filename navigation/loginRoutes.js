@@ -9,7 +9,7 @@ import SignupScreen from "../screens/BeforeLoginScreens/signup";
 import BottomNavigator from "./bottomNavigationBar";
 import VerifySignupScreen from "../screens/BeforeLoginScreens/verifySignup";
 import { NavigationContainer } from "@react-navigation/native";
-import { useColorScheme } from "react-native";
+import { useColorScheme, KeyboardAvoidingView } from "react-native";
 // initialize LoginStack
 const LoginStack = createNativeStackNavigator();
 

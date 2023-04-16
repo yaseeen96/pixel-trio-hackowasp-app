@@ -13,7 +13,7 @@ import LoginNavigator from "./loginRoutes";
 import DefaultRoutes from "./homeNavigator";
 import HomeNavigator from "./homeNavigator";
 import * as SecureStore from "expo-secure-store";
-import { validateMyselfController } from "../controllers/beforeLoginControllers/beforeLoginControllers";
+import { validateMyselfController } from "../controllers/controller";
 import { AuthActions } from "../store/slices/authSlice";
 import { getSession } from "../util/helper";
 

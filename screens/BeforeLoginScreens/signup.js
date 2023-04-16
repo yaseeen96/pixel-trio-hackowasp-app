@@ -2,9 +2,11 @@ import { useTheme } from "@react-navigation/native";
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TextInput, Button } from "react-native-paper";
-import { signupController } from "../../controllers/beforeLoginControllers/beforeLoginControllers";
+import { signupController } from "../../controllers/controller";
+import Toast from "react-native-toast-message";
 
 const SignupScreen = ({ navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
   // initializing theme colors
   const { colors } = useTheme();
 
@@ -18,6 +20,7 @@ const SignupScreen = ({ navigation }) => {
   const onSignupButtonPress = async () => {
     if (password === password2) {
       try {
+        setIsLoading(true);
         const response = await signupController({
           email: emailId,
           password,
@@ -25,10 +28,17 @@ const SignupScreen = ({ navigation }) => {
         });
         if (response.success === true) {
           navigation.navigate("verifySignup", { email: emailId });
+        } else if (response.success === false) {
+          Toast.show({
+            type: "error",
+            text1: "Uh Oh",
+            text2: "Something Went wrong. Please try again",
+          });
         }
       } catch (error) {
         console.log(error);
       }
+      setIsLoading(false);
     }
   };
 
@@ -78,6 +88,8 @@ const SignupScreen = ({ navigation }) => {
           theme={{ roundness: 2 }}
           buttonColor={colors.buttonColor}
           textColor={colors.buttonTextColor}
+          loading={isLoading}
+          disabled={isLoading}
         >
           Sign up
         </Button>
@@ -89,6 +101,7 @@ const SignupScreen = ({ navigation }) => {
 const getStyles = ({ colors }) =>
   StyleSheet.create({
     container: {
+      marginTop: "10%",
       padding: "10%",
       backgroundColor: colors.background,
       height: "100%",

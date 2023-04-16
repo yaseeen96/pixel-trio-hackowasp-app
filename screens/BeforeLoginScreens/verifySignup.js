@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import OTPInputs from "../../components/OTPInputs";
 import { Button } from "react-native-paper";
-import { verifySignupController } from "../../controllers/beforeLoginControllers/beforeLoginControllers";
+import { verifySignupController } from "../../controllers/controller";
 import { useDispatch } from "react-redux";
 import { AuthActions } from "../../store/slices/authSlice";
 
