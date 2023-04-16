@@ -137,6 +137,7 @@ const LoginScreen = ({ navigation }) => {
           loading={isLoading}
           disabled={isLoading}
           textColor={colors.buttonTextColor}
+          style={{ borderColor: "black", borderWidth: 1 }}
         >
           Sign in
         </Button>
@@ -166,6 +167,9 @@ const LoginScreen = ({ navigation }) => {
           theme={{ roundness: 2 }}
           buttonColor={colors.googleButtonColor}
           textColor={colors.text}
+          style={{ borderColor: "black", borderWidth: 1, height: 50 }}
+          contentStyle={{ justifyContent: "center" }}
+          labelStyle={{ justifyContent: "center" }}
         >
           Sign in with google
         </Button>

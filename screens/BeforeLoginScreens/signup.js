@@ -90,6 +90,7 @@ const SignupScreen = ({ navigation }) => {
           textColor={colors.buttonTextColor}
           loading={isLoading}
           disabled={isLoading}
+          style={{ borderColor: "black", borderWidth: 1 }}
         >
           Sign up
         </Button>
