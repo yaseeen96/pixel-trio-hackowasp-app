@@ -1,22 +1,68 @@
-import { useTheme } from "@react-navigation/native";
+import { useRoute, useTheme } from "@react-navigation/native";
 import { width } from "deprecated-react-native-prop-types/DeprecatedImagePropType";
-import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button, TextInput, Card, Chip } from "react-native-paper";
 import StarRating from "react-native-star-rating";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useSelector } from "react-redux";
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371; // Earth's radius in kilometers
+  const dLat = deg2rad(lat2 - lat1);
+  const dLon = deg2rad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) *
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+  const roundedDistance = Math.round(distance / 10) * 10; // Round to nearest 10
+  return roundedDistance;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
 
 const ShopDetailScreen = ({ navigation }) => {
+  const [distance, setDistance] = useState(null);
+  const route = useRoute();
+  const vendor = route.params.data;
   const { colors } = useTheme();
   const styles = getStyles({ colors });
+  const userLocation = useSelector((state) => state.auth.location);
+  console.log("my location: " + userLocation.latitude);
+
+  console.log("vendor: ", vendor);
+
+  useEffect(() => {
+    if (vendor && userLocation) {
+      console.log(vendor);
+      setDistance(
+        calculateDistance(
+          userLocation.latitude,
+          userLocation.longitude,
+          vendor.vendor.vendor.location.latitude,
+          vendor.vendor.vendor.location.longitude
+        )
+      );
+    }
+  }, [vendor, userLocation]);
 
   return (
     <View style={styles.container}>
       <ScrollView>
         <Card style={styles.card}>
-          <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
+          <Card.Cover source={{ uri: vendor.vendor.vendor.image }} />
           <View
-            style={{ flexDirection: "row", width: "100%", marginTop: "10%" }}
+            style={{
+              flexDirection: "row",
+              width: "100%",
+              marginTop: "10%",
+            }}
           >
             <View
               style={{
@@ -25,8 +71,9 @@ const ShopDetailScreen = ({ navigation }) => {
                 justifyContent: "center",
               }}
             >
+              <Pressable></Pressable>
               <Card.Title
-                title="Balaji xerox center"
+                title={vendor.vendor.vendor.name}
                 titleNumberOfLines={2}
                 titleStyle={{
                   color: colors.text,
@@ -57,7 +104,7 @@ const ShopDetailScreen = ({ navigation }) => {
             />
             <View style={styles.location}>
               <Ionicons name="location" color={colors.secondary} size={50} />
-              <Text style={styles.heading}>40 km</Text>
+              <Text style={styles.heading}>{distance} km</Text>
             </View>
           </View>
           <View style={styles.serviceSection}>
@@ -137,8 +184,8 @@ const ShopDetailScreen = ({ navigation }) => {
           </View>
 
           {/* <Card.Actions>
-          <Button>Print</Button>
-        </Card.Actions> */}
+  <Button>Print</Button>
+</Card.Actions> */}
         </Card>
         <Button
           title="Logout"

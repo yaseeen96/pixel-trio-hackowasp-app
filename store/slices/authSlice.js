@@ -6,6 +6,7 @@ const initialState = {
   user: null,
   authToken: null,
   vendors: [],
+  location: { latitude: "", longitude: "" },
 };
 
 export const authSlice = createSlice({
@@ -24,6 +25,10 @@ export const authSlice = createSlice({
     },
     FillVendors: (state, action) => {
       state.vendors = action.payload;
+    },
+    FillLocation: (state, action) => {
+      state.location.latitude = action.payload.latitude;
+      state.location.longitude = action.payload.longitude;
     },
   },
 });

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AuthActions } from "../../store/slices/authSlice";
 import { Avatar, Button, Card } from "react-native-paper";
 import StarRating from "react-native-star-rating";
+import * as Location from "expo-location";
 
 function getRandomNumber() {
   const min = 1; // minimum value
@@ -39,11 +40,24 @@ const HomeScreen = ({ navigation }) => {
         dispatch(AuthActions.Logout());
       }
     })();
+    fetchLocation();
     fetchVendors();
   }, []);
 
-  const handleOnPrintPress = () => {
-    navigation.navigate("shop-details");
+  const handleOnPrintPress = ({ vendor }) => {
+    navigation.navigate("shop-details", { data: { vendor } });
+  };
+
+  const fetchLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      console.log("Permission to access location was denied");
+      return;
+    }
+    let {
+      coords: { latitude, longitude },
+    } = await Location.getCurrentPositionAsync({});
+    dispatch(AuthActions.FillLocation({ latitude, longitude }));
   };
 
   const fetchVendors = async () => {
@@ -68,12 +82,12 @@ const HomeScreen = ({ navigation }) => {
           <Card key={index} style={styles.card}>
             <View style={{ flexDirection: "row" }}>
               <Card.Cover
-                source={{ uri: item.image }}
+                source={{ uri: item.vendor.image }}
                 style={{ width: "40%", height: "100%" }}
               />
               <View style={styles.cardContent}>
                 <Card.Title
-                  title={item.name}
+                  title={item.vendor.name}
                   titleStyle={{ color: colors.text, fontWeight: "bold" }}
                 />
 
@@ -90,7 +104,13 @@ const HomeScreen = ({ navigation }) => {
                 </Card.Content>
 
                 <Card.Actions>
-                  <Button onPress={handleOnPrintPress}>Print</Button>
+                  <Button
+                    onPress={() => {
+                      handleOnPrintPress({ vendor: item });
+                    }}
+                  >
+                    Print
+                  </Button>
                 </Card.Actions>
               </View>
             </View>
