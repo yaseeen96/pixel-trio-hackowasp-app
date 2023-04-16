@@ -28,7 +28,7 @@ const SignupScreen = ({ navigation }) => {
         });
         if (response.success === true) {
           navigation.navigate("verifySignup", { email: emailId });
-        } else if (response.success === false) {
+        } else {
           Toast.show({
             type: "error",
             text1: "Uh Oh",
