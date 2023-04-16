@@ -75,7 +75,11 @@ const HomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.heading}>Hello,</Text>
       <Text style={styles.subheading}>{user?.fullName}</Text>
-      <Searchbar style={styles.searchBar} placeholder="Search nearby shops" />
+      <Searchbar
+        theme={{ roundness: 2 }}
+        style={styles.searchBar}
+        placeholder="Search nearby shops"
+      />
 
       <ScrollView>
         {vendors.map((item, index) => (

@@ -17,6 +17,30 @@ export async function loginController({ email, password }) {
     return error.response.data;
   }
 }
+export async function getBookingsController() {
+  try {
+    const response = await axios.get("/user/bookings");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return error.response.data;
+  }
+}
+
+export async function bookServiceController({ formData }) {
+  try {
+    // console.log("FORM DATA", formData);
+    const response = await axios.post("/user/bookService", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return error?.message;
+  }
+}
 
 export async function signupController({ email, password, fullName }) {
   const SIGNUP_API_URL = endpoints.signupEndpoint;

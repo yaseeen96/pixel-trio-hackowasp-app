@@ -44,6 +44,7 @@ const BottomNavigator = () => {
         },
 
         headerShown: false,
+        tabBarShowLabel: false,
       })}
     >
       <Tab.Screen

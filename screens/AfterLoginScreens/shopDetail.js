@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button, TextInput, Card, Chip } from "react-native-paper";
 import StarRating from "react-native-star-rating";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
+import { getDistance } from "../../util/helper";
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // Earth's radius in kilometers
@@ -35,22 +36,22 @@ const ShopDetailScreen = ({ navigation }) => {
   const styles = getStyles({ colors });
   const userLocation = useSelector((state) => state.auth.location);
   console.log("my location: " + userLocation.latitude);
+  const services = vendor?.vendor?.services;
 
   console.log("vendor: ", vendor);
 
   useEffect(() => {
     if (vendor && userLocation) {
       console.log(vendor);
-      setDistance(
-        calculateDistance(
-          userLocation.latitude,
-          userLocation.longitude,
-          vendor.vendor.vendor.location.latitude,
-          vendor.vendor.vendor.location.longitude
-        )
-      );
+      setDistance(getDistance(userLocation, vendor.vendor.vendor.location));
     }
   }, [vendor, userLocation]);
+  const PrintHandler = (service) => {
+    navigation.navigate("print-paper", {
+      service,
+      vendorId: vendor?.vendor?.vendor?._id,
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -107,98 +108,129 @@ const ShopDetailScreen = ({ navigation }) => {
               <Text style={styles.heading}>{distance} km</Text>
             </View>
           </View>
-          <View style={styles.serviceSection}>
-            <Text style={styles.heading}>Services</Text>
-            <Text style={styles.labelText}>Print Size</Text>
-            <View style={styles.chipRow}>
-              <Chip
-                style={styles.chip}
-                textStyle={{
-                  alignSelf: "center",
-                  color: colors.buttonTextColor,
-                }}
-              >
-                A4
-              </Chip>
-              <Chip
-                style={styles.chip}
-                textStyle={{
-                  alignSelf: "center",
-                  color: colors.buttonTextColor,
-                }}
-              >
-                A3
-              </Chip>
-              <Chip
-                style={styles.chip}
-                textStyle={{
-                  alignSelf: "center",
-                  color: colors.buttonTextColor,
-                }}
-              >
-                A2
-              </Chip>
-            </View>
-            <Text style={styles.labelText}>Print Material</Text>
-            <View style={styles.chipRow}>
-              <Chip
-                style={[styles.chip, { width: "50%" }]}
-                textStyle={{
-                  alignSelf: "center",
-                  color: colors.buttonTextColor,
-                }}
-              >
-                Standard
-              </Chip>
-              <Chip
-                style={[styles.chip, { width: "50%" }]}
-                textStyle={{
-                  alignSelf: "center",
-                  color: colors.buttonTextColor,
-                }}
-              >
-                Glossy
-              </Chip>
-            </View>
-            <Text style={styles.labelText}>Print Type</Text>
-            <View style={styles.chipRow}>
-              <Chip
-                style={[styles.chip, { width: "50%" }]}
-                textStyle={{
-                  alignSelf: "center",
-                  color: colors.buttonTextColor,
-                }}
-              >
-                Color
-              </Chip>
-              <Chip
-                style={[styles.chip, { width: "50%" }]}
-                textStyle={{
-                  alignSelf: "center",
-                  color: colors.buttonTextColor,
-                }}
-              >
-                Grayscale
-              </Chip>
-            </View>
-          </View>
-
-          {/* <Card.Actions>
-  <Button>Print</Button>
-</Card.Actions> */}
         </Card>
-        <Button
-          title="Logout"
-          //   onPress={logoutHandler}
-          mode="contained"
-          buttonColor={colors.primary}
-          textColor={colors.buttonTextColor}
-          style={styles.button}
-          theme={{ roundness: 2 }}
+
+        {/* <Card>
+          <Text
+            style={{
+              color: colors.primary,
+              fontWeight: "500",
+              fontSize: 28,
+              marginBottom: 10,
+            }}
+          >
+            Services
+          </Text>
+        </Card> */}
+
+        <Text
+          style={{
+            fontSize: 22,
+            marginBottom: 20,
+            fontWeight: "500",
+            color: colors.text,
+          }}
         >
-          {" "}
-          Book Service
-        </Button>
+          Your options
+        </Text>
+
+        {services &&
+          Array.isArray(services) &&
+          services.map((service) => {
+            return (
+              <Card style={{ padding: 16, marginBottom: 20 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <View style={{ marginBottom: 20 }}>
+                    <View
+                      style={{
+                        width: 100,
+                        alignItems: "center",
+                        marginBottom: 30,
+                      }}
+                    >
+                      <Ionicons
+                        name="document"
+                        size={28}
+                        color={colors.secondary}
+                        style={{ marginBottom: 10 }}
+                      />
+                      <Text style={{ color: colors.text, fontWeight: "500" }}>
+                        {service.paperMaterial} paper
+                      </Text>
+                    </View>
+
+                    <View
+                      style={{
+                        width: 100,
+                        alignItems: "center",
+                      }}
+                    >
+                      <Ionicons
+                        name="document"
+                        size={28}
+                        color={colors.secondary}
+                        style={{ marginBottom: 10 }}
+                      />
+                      <Text style={{ color: colors.text, fontWeight: "500" }}>
+                        {service.paperSize} size
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View>
+                    <View
+                      style={{
+                        width: 100,
+                        alignItems: "center",
+                        marginBottom: 30,
+                      }}
+                    >
+                      <Ionicons
+                        name="document"
+                        size={28}
+                        color={colors.secondary}
+                        style={{ marginBottom: 10 }}
+                      />
+                      <Text style={{ color: colors.text, fontWeight: "500" }}>
+                        {service.printType} print
+                      </Text>
+                    </View>
+
+                    <View
+                      style={{
+                        width: 100,
+                        alignItems: "center",
+                      }}
+                    >
+                      <Ionicons
+                        name="document"
+                        size={28}
+                        color={colors.secondary}
+                        style={{ marginBottom: 10 }}
+                      />
+                      <Text style={{ color: colors.text, fontWeight: "500" }}>
+                        ₹{service.perPageCost} per page
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+
+                <Button
+                  buttonColor={colors.primary}
+                  theme={{ roundness: 2 }}
+                  textColor={colors.buttonTextColor}
+                  onPress={PrintHandler.bind(null, service)}
+                >
+                  Print
+                </Button>
+              </Card>
+            );
+          })}
       </ScrollView>
     </View>
   );
@@ -247,6 +279,7 @@ const getStyles = ({ colors }) =>
     card: {
       //   backgroundColor: colors.background,
       width: "100%",
+      marginBottom: 25,
     },
   });
 
