@@ -2,12 +2,13 @@ import { useTheme } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutController } from "../../controllers/controller";
 import { AuthActions } from "../../store/slices/authSlice";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const ProfileScreen = ({ navigation }) => {
+  const user = useSelector((state) => state.auth.user);
   const { colors } = useTheme();
   const styles = getStyles({ colors });
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const ProfileScreen = ({ navigation }) => {
         <TextInput
           style={styles.textInput}
           label="name"
-          value={"Yoo venkatesh"}
+          value={user?.fullName}
           mode="outlined"
           disabled={true}
           underlineStyle={{ borderWidth: 0 }}
@@ -41,7 +42,7 @@ const ProfileScreen = ({ navigation }) => {
         <TextInput
           style={styles.textInput}
           label="email"
-          value={"Venkateshpatil193@gmail.com"}
+          value={user?.email}
           mode="outlined"
           disabled={true}
         />

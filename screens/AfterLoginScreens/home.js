@@ -74,7 +74,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Hello,</Text>
-      <Text style={styles.subheading}>Venkatesh Patil</Text>
+      <Text style={styles.subheading}>{user?.fullName}</Text>
       <Searchbar style={styles.searchBar} placeholder="Search nearby shops" />
 
       <ScrollView>
